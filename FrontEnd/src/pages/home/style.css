@@ -1,0 +1,22 @@
+:root {
+  --y: #FFFF00;
+  --b: #010536;
+  --w: #FBFBF8;
+  --bl: black;
+}
+
+#in {
+  border: 2px solid #FBFBF8;
+  border-radius: 30px;
+  margin-left: 10px;
+}
+
+#enter {
+  margin-left: 650px;
+
+  &:hover {
+    background-color: var(--w);
+    color: var(--bl);
+    border-radius: 30px;
+  }
+}
