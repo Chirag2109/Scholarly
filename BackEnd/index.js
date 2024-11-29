@@ -21,6 +21,6 @@ app.use("/", express.static("./../frontend/dist"))
 
 // Routing middleware
 app.use("/user", userRoute);
-app.listen(port, () => {
-  console.log("The server is running on port: ", port);
-});
+app.listen(8081, () => {
+  console.log('Server is running on port http://localhost:8081');
+})
