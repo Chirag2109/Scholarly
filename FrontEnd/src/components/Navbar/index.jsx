@@ -21,10 +21,16 @@ function Navbar() {
                 <i className="fa fa-fw fa-newspaper-o"></i> News
             </Link>
             <Link
-                to="/people"
-                className={path === '/people' ? 'active' : ''}
+                to="/scholars"
+                className={path === '/scholars' ? 'active' : ''}
             >
-                <i className="fa fa-fw fa-user"></i> People
+                <i className="fa fa-fw fa-user"></i> Scholars
+            </Link>
+            <Link
+                to="/lectures"
+                className={path === '/lectures' ? 'active' : ''}
+            >
+                <i className="fa fa-fw fa-play"></i> Lectures
             </Link>
             <Link
                 to="/articles"
