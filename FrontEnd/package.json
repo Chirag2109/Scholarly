@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "cross-env PORT=8080 react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
+    "start": "cross-env PORT=8080 vite",
+    "build": "vite build",
+    "eject": "vite eject",
+    "preview": "vite preview",
     "lint": "eslint --ext .js,.jsx ./src",
     "lint:fix": "eslint --fix --ext .js,.jsx ./src"
   },
