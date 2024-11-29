@@ -27,7 +27,7 @@ const lectures=[
 
 function Lectures() {
     return (
-        <div className="container">
+        <div className="lectures-container">
             {lectures.map((lecture) => (
                 <VideoCard key={lecture.id} lecture={lecture} />
             ))}
