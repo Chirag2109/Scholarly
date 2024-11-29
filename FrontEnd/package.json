@@ -4,12 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "cross-env PORT=8080 vite",
+    "dev": "vite --port=8080", 
     "build": "vite build",
-    "eject": "vite eject",
-    "preview": "vite preview",
-    "lint": "eslint --ext .js,.jsx ./src",
-    "lint:fix": "eslint --fix --ext .js,.jsx ./src"
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
