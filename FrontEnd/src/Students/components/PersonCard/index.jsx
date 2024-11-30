@@ -5,11 +5,11 @@ const PersonCard = (props) => {
     return (
         <div key={index} className="person-card">
             <div className="profile-picture">
-                <img src={person.image} alt={`${person.name}'s profile`} />
+                <img src={props.person.image} alt={`${props.person.name}'s profile`} />
             </div>
             <div className="person-info">
-                <h2>{person.name}</h2>
-                <p>{person.title}</p>
+                <h2>{props.person.name}</h2>
+                <p>{props.person.title}</p>
                 <button className="connect-button">Connect</button>
             </div>
         </div>
