@@ -3,7 +3,7 @@ import "./styles.css";
 
 const PersonCard = (props) => {
     return (
-        <div key={index} className="person-card">
+        <div className="person-card">
             <div className="profile-picture">
                 <img src={props.person.image} alt={`${props.person.name}'s profile`} />
             </div>
