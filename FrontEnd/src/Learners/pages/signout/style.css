@@ -1,0 +1,79 @@
+:root {
+  --y: #FFFF00;
+  --b: #010536;
+  --w: #FBFBF8;
+  --bl: #000000;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--w);
+  color: var(--b);
+  margin: 0;
+  padding: 0;
+}
+
+.logout-container {
+  max-width: 450px;
+  margin: 5% auto;
+  padding: 30px;
+  border: 1px solid var(--bl);
+  border-radius: 8px;
+  background-color: var(--w);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.logout-container h1 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: var(--b);
+}
+
+.logout-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.logout-buttons button {
+  flex: 1;
+  margin: 0 10px;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.confirm-logout {
+  background-color: var(--b);
+  color: var(--w);
+}
+
+.confirm-logout:hover {
+  background-color: var(--y);
+  color: var(--b);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cancel-logout {
+  background-color: var(--w);
+  color: var(--b);
+  border: 1px solid var(--b);
+}
+
+.cancel-logout:hover {
+  background-color: var(--y);
+  color: var(--b);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logos {
+  display: inline-block;
+  margin: 5px;
+  margin-bottom: 20px;
+  width: 10%;
+  height: 10%;
+}

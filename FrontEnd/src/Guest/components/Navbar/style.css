@@ -1,0 +1,43 @@
+.topnav {
+    height: fit-content;
+    width: 100%;
+    background-color: var(--b);
+    overflow: hidden;
+}
+
+.topnav a {
+    float: left;
+    color: var(--w);
+    font-size: 20px;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    margin-top: 10px;
+    margin-left: 50px;
+    margin-bottom: 10px;
+}
+
+.topnav a:hover {
+    background-color: var(--w);
+    color: var(--bl);
+}
+
+.topnav a.active {
+    background-color: var(--y);
+    color: var(--bl);
+}
+
+#in {
+    border: 2px solid #FBFBF8;
+    border-radius: 30px;
+    margin-left: 10px;
+}
+
+#enter {
+    margin-left: 650px;
+    &:hover {
+        background-color: var(--w);
+        color: var(--bl);
+        border-radius: 30px;
+    }
+}

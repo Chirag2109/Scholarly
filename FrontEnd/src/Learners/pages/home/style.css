@@ -1,0 +1,21 @@
+:root {
+  --y: #FFFF00;
+  --b: #010536;
+  --w: #FBFBF8;
+  --bl: black;
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  margin: 0;
+  background-color: var(--w);
+  color: var(--b);
+}
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+  margin: 20px auto;
+}

@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from './../pages/layout';
-import Home from './../pages/home';
-import News from './../pages/news';
-import Scholars from './../pages/scholars';
-import Lectures from './../pages/lectures';
-import Article from './../pages/article';
-import Enter from './../pages/signup';
-import SignIn from './../pages/signin';
+import Layout from '../Guest/pages/layout';
+import Home from '../Guest/pages/home';
+import News from '../Guest/pages/news';
+import Scholars from '../Guest/pages/scholars';
+import Lectures from '../Guest/pages/lectures';
+import Article from '../Guest/pages/article';
+import Enter from '../Guest/pages/signup';
+import SignOut from '../Guest/pages/signout';
 
 const router = createBrowserRouter([
   {
@@ -40,8 +40,8 @@ const router = createBrowserRouter([
     element: <Enter />,
   },
   {
-    path: 'sign_in',
-    element: <SignIn />,
+    path: 'sign_out',
+    element: <SignOut />,
   },
 ]);
 

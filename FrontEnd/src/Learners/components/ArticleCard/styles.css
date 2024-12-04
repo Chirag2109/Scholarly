@@ -1,0 +1,120 @@
+/* General reset and styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Card container */
+.Card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: #fff;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Decorative line */
+.line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(#FBFBF8, #FFFF00, #010536);
+}
+
+/* Content section */
+.content {
+    flex: 1;
+    padding: 20px;
+    padding-left: 25px;
+}
+
+.content h2 {
+    font-size: 1.5rem;
+    color: #101820;
+    margin: 0;
+    font-weight: bold;
+}
+
+.content h5 {
+    font-size: 0.9rem;
+    color: #6D2C91;
+    margin: 5px 0;
+    display: inline-block;
+}
+
+.content h5:not(:last-child)::after {
+    content: "•";
+    margin: 0 5px;
+    color: #ccc;
+}
+
+.content p {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.content a {
+    font-size: 1rem;
+    color: #C8102E;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.content a:hover {
+    text-decoration: underline;
+}
+
+/* Image section */
+.image {
+    flex: 1;
+    max-width: 300px;
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .Card {
+        flex-direction: column;
+    }
+
+    .line {
+        height: 5px;
+        width: 100%;
+        position: static;
+    }
+
+    .content {
+        padding-left: 20px; /* Reset padding for mobile */
+    }
+
+    .image {
+        max-width: 100%;
+    }
+
+    .image img {
+        border-radius: 0;
+    }
+}
