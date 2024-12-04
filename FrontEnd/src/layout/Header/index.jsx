@@ -1,4 +1,4 @@
-import Navbar from "../Navbar";
+import Navbar from "../../Guest/components/Navbar";
 import "./style.css";
 
 function Header() {
