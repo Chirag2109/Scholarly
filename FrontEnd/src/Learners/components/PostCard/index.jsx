@@ -8,13 +8,31 @@ function PostCard({ post }) {
     setLiked(!liked);
   };
 
+  const renderPostContent = () => {
+    if (post.type === 'image') {
+      return <img src={post.image} alt="Post content" className="post-image" />;
+    }
+    if (post.type === 'video') {
+      return (
+        <video className="post-video" controls>
+          <source src={post.videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    }
+    if (post.type === 'text') {
+      return <p className="post-text">{post.text}</p>;
+    }
+    return null;
+  };
+
   return (
     <div className="post-card">
       <div className="post-header">
         <img src={post.userAvatar} alt="User avatar" className="avatar" />
         <span className="username">{post.username}</span>
       </div>
-      <img src={post.image} alt="Post content" className="post-image" />
+      {renderPostContent()}
       <div className="post-actions">
         <button onClick={toggleLike} className="like-button">
           {liked ? '❤️' : '🤍'}
