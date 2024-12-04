@@ -1,9 +1,9 @@
 import express from "express";
-import userRoute from "./routes/user.js";
-import "./config/dbconnection.js";
+import userRoute from "./src/routes/user.js";
+import "./src/config/dbconnection.js";
 
 const app = express();
-const port = "3000";
+const port = "4000";
 
 // Generic Middlewares
 app.use(express.json());
@@ -17,10 +17,13 @@ app.use("*", (req, res, next) => {
   next();
 });
 
-app.use("/", express.static("./../frontend/dist"))
-
 // Routing middleware
 app.use("/user", userRoute);
-app.listen(8081, () => {
-  console.log('Server is running on port http://localhost:8081');
-})
+
+app.get("/", (req, res) => {
+  res.send("hello world again");
+});
+
+app.listen(port, () => {
+  console.log("The server is running on port: ", port);
+});
