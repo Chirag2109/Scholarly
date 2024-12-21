@@ -1,6 +1,6 @@
 import guest from './guest';
-import learner from './learner';
-import scholar from './scholar';
+// import learner from './learner';
+// import scholar from './scholar';
 import Layout from '../layout';
 import { createBrowserRouter } from 'react-router-dom';
 

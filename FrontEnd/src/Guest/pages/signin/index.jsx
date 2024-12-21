@@ -1,49 +1,95 @@
-import React, { useState } from 'react';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import GoogleSignInButton from '../../components/Google';
+import { useRef, useState } from "react";
+// import { GoogleOAuthProvider } from '@react-oauth/google';
+// import GoogleSignInButton from '../../components/Google';
 import './style.css';
 import logo from "../../Images/Logo3.png";
 import { Link } from 'react-router-dom';
 
 function SignIn() {
+  const usernameOrEmailRef = useRef(null);
+  const passwordRef = useRef(null);
+
   const [formData, setFormData] = useState({
-    usernameOrEmail: '',
-    password: '',
+    usernameOrEmail: "",
+    password: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [signInSuccess, setSignInSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const fetchUserDetails = async () => {
+    const email = localStorage.getItem("loggedInUserEmail");
+    try {
+      const response = await fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/${email}`, {
+        headers: {
+          Authorization: localStorage.getItem("authToken"),
+        },
+      });
+
+      if (response.ok) {
+        const userDetails = await response.json();
+        localStorage.setItem("userDetails", JSON.stringify(userDetails));
+        console.log("The user details are:", userDetails);
+        window.location.reload();
+      } else {
+        console.error("Failed to fetch user details.");
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const { usernameOrEmail, password } = formData;
 
     const newErrors = {};
-    if (!formData.usernameOrEmail) {
-      newErrors.usernameOrEmail = 'Username or Email is required';
-    }
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    }
+    if (!usernameOrEmail) newErrors.usernameOrEmail = "Username or Email is required";
+    if (!password) newErrors.password = "Password is required";
 
-    if (Object.keys(newErrors).length === 0) {
-
-      console.log('Sign-In successful', formData);
-    } else {
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/signin`, {
+        method: "POST",
+        body: JSON.stringify({ usernameOrEmail, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("authToken", data?.token);
+        localStorage.setItem("loggedInUserEmail", usernameOrEmail);
+        setSignInSuccess(true);
+        alert("Sign-in successful");
+        fetchUserDetails();
+      } else {
+        alert("Sign-in failed");
+      }
+    } catch (error) {
+      console.error("Sign-in error:", error);
     }
   };
 
   return (
     <>
-      <Link to="/" className='parent-container'><img src={logo} alt="logo" className="logos" /></Link>
+      <Link to="/" className="parent-container">
+        <img src={logo} alt="logo" className="logos" />
+      </Link>
       <h1>Log in to keep exploring and learning!</h1>
       <div className="register-container">
         <h2>Sign In</h2>
@@ -79,12 +125,15 @@ function SignIn() {
           <p>or</p>
         </div>
 
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+        {/* <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <GoogleSignInButton />
-        </GoogleOAuthProvider>
+        </GoogleOAuthProvider> */}
 
         <div className="register-redirect">
-          New to Scholarly? <Link to="/sign_up" className="register-link">Register here</Link>
+          New to Scholarly?{" "}
+          <Link to="/sign_up" className="register-link">
+            Register here
+          </Link>
         </div>
       </div>
     </>

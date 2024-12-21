@@ -1,67 +1,103 @@
-import React, { useState } from 'react';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import GoogleSignInButton from '../../components/Google';
+import React, { useRef, useState } from 'react';
+// import { GoogleOAuthProvider } from '@react-oauth/google';
+// import GoogleSignInButton from '../../components/Google';
 import './style.css';
 import logo from "../../Images/Logo3.png";
 import { Link } from 'react-router-dom';
 
 function Enter() {
-  const [formData, setFormData] = useState({
-    usernameOrEmail: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
 
-  const [errors, setErrors] = useState({});
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const signUpHandler = async (event) => {
+    event.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    const formValues = {
+      username: usernameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      confirmPassword: confirmPasswordRef.current.value,
+    };
 
-    
-    const newErrors = {};
-    if (!formData.usernameOrEmail) {
-      newErrors.usernameOrEmail = 'Username or Email is required';
-    }
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    }
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords must match';
-    }
+    console.log("Form values: ", formValues);
 
-    if (Object.keys(newErrors).length === 0) {
-      
-      console.log('Registration successful', formData);
+    if (
+      formValues.username &&
+      formValues.email &&
+      formValues.password &&
+      formValues.password === formValues.confirmPassword
+    ) {
+      console.log("Submitting form...");
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_NODEJS_BACKEND}/user/signup`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              username: formValues.username,
+              email: formValues.email,
+              password: formValues.password,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok && (response.status === 201 || response.status === 200)) {
+          setShowFailureAlert(false);
+          setShowSuccessAlert(true);
+          usernameRef.current.value = "";
+          emailRef.current.value = "";
+          passwordRef.current.value = "";
+          confirmPasswordRef.current.value = "";
+        } else {
+          setShowSuccessAlert(false);
+          setShowFailureAlert(true);
+        }
+        console.log("Response: ", response);
+      } catch (error) {
+        console.error("Error during signup: ", error);
+        setShowSuccessAlert(false);
+        setShowFailureAlert(true);
+      }
     } else {
-      setErrors(newErrors);
+      console.log("Validation failed");
+      setShowFailureAlert(true);
     }
   };
 
   return (
     <>
-      <Link to="/" className='parent-container'><img src={logo} alt="logo" className="logos" /></Link>
+      <Link to="/" className='parent-container'>
+        <img src={logo} alt="logo" className="logos" />
+      </Link>
       <h1>Ready to explore? Create your account and dive in!</h1>
       <div className="register-container">
         <h2>Register</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={signUpHandler}>
           <div className="form-group">
-            <label htmlFor="usernameOrEmail">Username or Email</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
-              id="usernameOrEmail"
-              name="usernameOrEmail"
-              value={formData.usernameOrEmail}
-              onChange={handleChange}
+              id="username"
+              ref={usernameRef}
             />
-            {errors.usernameOrEmail && <p className="error">{errors.usernameOrEmail}</p>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              ref={emailRef}
+            />
           </div>
 
           <div className="form-group">
@@ -69,11 +105,8 @@ function Enter() {
             <input
               type="password"
               id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
+              ref={passwordRef}
             />
-            {errors.password && <p className="error">{errors.password}</p>}
           </div>
 
           <div className="form-group">
@@ -81,23 +114,23 @@ function Enter() {
             <input
               type="password"
               id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
+              ref={confirmPasswordRef}
             />
-            {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
           </div>
 
           <button type="submit">Enter the Community</button>
         </form>
 
+        {showSuccessAlert && <p className="success-alert">Registration successful!</p>}
+        {showFailureAlert && <p className="failure-alert">Error in registration. Please try again.</p>}
+
         <div className="or-divider">
           <p>or</p>
         </div>
 
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+        {/* <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <GoogleSignInButton />
-        </GoogleOAuthProvider>
+        </GoogleOAuthProvider> */}
 
         <div className="login-redirect">
           Already on Scholarly? <Link to="/sign_in" className="login-link">Log in</Link>
