@@ -1,0 +1,12 @@
+footer {
+    background-color: var(--b);
+    color: var(--w);
+    padding: 20px;
+    text-align: center;
+    margin-top: auto;
+    box-sizing: border-box;
+}
+
+footer .footer-content p {
+    margin: 0;
+}

@@ -1,0 +1,48 @@
+.logo {
+    margin-top: 50px;
+    margin-left: 100px;
+    height: 500px;
+    border-radius: 50%;
+}
+
+.panel {
+    display: flex;
+}
+
+.head {
+    font-size: 90px;
+    color: var(--bl);
+    padding: 70px;
+}
+
+.slogan {
+    font-size: 50px;
+    color: var(--bl);
+    padding: 30px;
+    margin-left: 40px;
+    word-spacing: 20px;
+}
+
+.cta-button {
+    background-color: var(--y);
+    width: 90%;
+    color: var(--b);
+    margin-left: 70px;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.cta-link {
+    text-decoration: none;
+}
+
+.cta-button:hover {
+    background-color: var(--b);
+    color: var(--w);
+    transform: scale(1.05);
+}
