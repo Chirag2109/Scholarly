@@ -154,3 +154,24 @@ h1 {
 .register-link:hover {
   text-decoration: underline;
 }
+
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--b);
+  border-radius: 4px;
+  background-color: var(--w);
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.form-group select:focus {
+  border-color: var(--y);
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+}
+
+.form-group select option {
+  background-color: var(--w);
+  color: var(--b);
+}

@@ -10,6 +10,7 @@ function Enter() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+  const userTypeRef = useRef(null);
 
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showFailureAlert, setShowFailureAlert] = useState(false);
@@ -22,6 +23,7 @@ function Enter() {
       email: emailRef.current.value,
       password: passwordRef.current.value,
       confirmPassword: confirmPasswordRef.current.value,
+      userType: userTypeRef.current.value,
     };
 
     console.log("Form values: ", formValues);
@@ -30,7 +32,8 @@ function Enter() {
       formValues.username &&
       formValues.email &&
       formValues.password &&
-      formValues.password === formValues.confirmPassword
+      formValues.password === formValues.confirmPassword &&
+      formValues.userType
     ) {
       console.log("Submitting form...");
 
@@ -43,6 +46,7 @@ function Enter() {
               username: formValues.username,
               email: formValues.email,
               password: formValues.password,
+              userType: formValues.userType,
             }),
             headers: {
               "Content-Type": "application/json",
@@ -57,6 +61,7 @@ function Enter() {
           emailRef.current.value = "";
           passwordRef.current.value = "";
           confirmPasswordRef.current.value = "";
+          userTypeRef.current.value = "";
         } else {
           setShowSuccessAlert(false);
           setShowFailureAlert(true);
@@ -116,6 +121,15 @@ function Enter() {
               id="confirmPassword"
               ref={confirmPasswordRef}
             />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="userType">User Type</label>
+            <select id="userType" ref={userTypeRef}>
+              <option value="">Select User Type</option>
+              <option value="Scholar">Scholar</option>
+              <option value="Learner">Learner</option>
+            </select>
           </div>
 
           <button type="submit">Enter the Community</button>
