@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  userType: { type: String, required: true },
 });
 
 const User = mongoose.model('User', userSchema);
@@ -41,7 +42,7 @@ const User = mongoose.model('User', userSchema);
 // Signup Route
 app.post('/user/signup', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, userType } = req.body;
 
     // Basic Validation
     if (!username || !email || !password) {
@@ -54,12 +55,27 @@ app.post('/user/signup', async (req, res) => {
       return res.status(409).json({ message: 'Username or Email already exists.' });
     }
 
+    // Password validation
+    if (password.length < 8 || !/\d/.test(password) || !/[A-Z]/.test(password)) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters long, include one number, and one uppercase letter.' });
+    }
+
     // Hash the password and save the user
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({ username, email, password: hashedPassword, userType });
     await newUser.save();
 
-    res.status(201).json({ message: 'User registered successfully.' });
+    // Generate a JWT token for the newly registered user
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(201).json({
+      message: 'User registered successfully.',
+      token, // Send the token along with the response
+    });
   } catch (error) {
     console.error('Error during user signup:', error);
     res.status(500).json({ message: 'An error occurred. Please try again.' });
@@ -104,6 +120,35 @@ app.post('/user/signin', async (req, res) => {
     console.error('Error during user sign-in:', error);
     res.status(500).json({ message: 'An error occurred. Please try again.' });
   }
+});
+
+app.get('/user/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await User.findOne({ email }, { password: 0 });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    res.status(500).json({ message: 'An error occurred. Please try again.' });
+  }
+});
+
+const authenticateToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1]; // Extract token
+  if (!token) return res.status(401).json({ message: 'Access denied.' });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: 'Invalid token.' });
+    req.user = user;
+    next();
+  });
+};
+
+app.get('/protected', authenticateToken, (req, res) => {
+  res.status(200).json({ message: 'Welcome to the protected route!', user: req.user });
 });
 
 // Start the Server

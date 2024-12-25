@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react';
-// import { GoogleOAuthProvider } from '@react-oauth/google';
-// import GoogleSignInButton from '../../components/Google';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import './style.css';
 import logo from "../../Images/Logo3.png";
-import { Link } from 'react-router-dom';
 
 function Enter() {
+  const navigate = useNavigate();
   const usernameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -17,7 +16,7 @@ function Enter() {
 
   const signUpHandler = async (event) => {
     event.preventDefault();
-
+  
     const formValues = {
       username: usernameRef.current.value,
       email: emailRef.current.value,
@@ -25,9 +24,9 @@ function Enter() {
       confirmPassword: confirmPasswordRef.current.value,
       userType: userTypeRef.current.value,
     };
-
+  
     console.log("Form values: ", formValues);
-
+  
     if (
       formValues.username &&
       formValues.email &&
@@ -36,7 +35,7 @@ function Enter() {
       formValues.userType
     ) {
       console.log("Submitting form...");
-
+  
       try {
         const response = await fetch(
           `${import.meta.env.VITE_NODEJS_BACKEND}/user/signup`,
@@ -53,20 +52,51 @@ function Enter() {
             },
           }
         );
-
+  
         if (response.ok && (response.status === 201 || response.status === 200)) {
-          setShowFailureAlert(false);
-          setShowSuccessAlert(true);
-          usernameRef.current.value = "";
-          emailRef.current.value = "";
-          passwordRef.current.value = "";
-          confirmPasswordRef.current.value = "";
-          userTypeRef.current.value = "";
+          // Now sign in the user after successful signup
+          const signInResponse = await fetch(
+            `${import.meta.env.VITE_NODEJS_BACKEND}/user/signin`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                usernameOrEmail: formValues.email, // Use email or username
+                password: formValues.password,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+  
+          if (signInResponse.ok) {
+            const data = await signInResponse.json();
+            localStorage.setItem('token', data.token); // Store the token in local storage
+            setShowFailureAlert(false);
+            setShowSuccessAlert(true);
+            console.log("Data: ", data);
+
+            if (formValues.userType === "Scholar") {
+              navigate("/scholar-dashboard");
+            } else if (formValues.userType === "Learner") {
+              navigate("/learner-dashboard");
+            } else {
+              navigate("/");
+            }
+
+            usernameRef.current.value = "";
+            emailRef.current.value = "";
+            passwordRef.current.value = "";
+            confirmPasswordRef.current.value = "";
+            userTypeRef.current.value = "";
+          } else {
+            setShowSuccessAlert(false);
+            setShowFailureAlert(true);
+          }
         } else {
           setShowSuccessAlert(false);
           setShowFailureAlert(true);
         }
-        console.log("Response: ", response);
       } catch (error) {
         console.error("Error during signup: ", error);
         setShowSuccessAlert(false);
@@ -76,7 +106,7 @@ function Enter() {
       console.log("Validation failed");
       setShowFailureAlert(true);
     }
-  };
+  };    
 
   return (
     <>
@@ -141,10 +171,6 @@ function Enter() {
         <div className="or-divider">
           <p>or</p>
         </div>
-
-        {/* <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <GoogleSignInButton />
-        </GoogleOAuthProvider> */}
 
         <div className="login-redirect">
           Already on Scholarly? <Link to="/sign_in" className="login-link">Log in</Link>
