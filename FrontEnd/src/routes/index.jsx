@@ -5,6 +5,7 @@ import Lectures from '../pages/lectures';
 import Article from '../pages/article';
 import Enter from '../pages/signup';
 import SignIn from '../pages/signin';
+import Dashboard from '../pages/dashboard';
 import Layout from '../layout';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: 'sign_in',
     element: <SignIn />,
+  },
+  {
+    path: 'scholar-dashboard',
+    element: <Dashboard />,
   }
 ]);
 
