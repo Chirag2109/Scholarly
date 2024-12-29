@@ -1,9 +1,7 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import authenticateToken from './src/utils/helper';
-import userRouter from './src/routes/users';
-
-dotenv.config();
+import authenticateToken from './src/utils/helper.js';
+import userRouter from './src/routes/users.js';
+import './src/config/dbconnection.js';
 
 // Initialize Express
 const app = express();
