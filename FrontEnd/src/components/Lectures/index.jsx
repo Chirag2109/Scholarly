@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './style.css';
 
-const Lectures = ({ lectures }) => {
+const Lectures = ({ lectures, get, upload }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [video, setVideo] = useState(null);
@@ -61,8 +61,7 @@ const Lectures = ({ lectures }) => {
   return (
     <div className="lectures">
       {/* Display Lectures */}
-      <div className="lecture-list">
-        <h3>Lectures</h3>
+      {(get) && (<div className="lecture-list">
         {lectureList.length > 0 ? (
           <ul>
             {lectureList.map((lecture, index) => (
@@ -79,46 +78,48 @@ const Lectures = ({ lectures }) => {
         ) : (
           <p>No lectures available</p>
         )}
-      </div>
+      </div>)}
 
       {/* Upload Lecture Form */}
-      <div className="upload-lecture">
-        <h3>Upload New Lecture</h3>
-        <form>
-          <div>
-            <label htmlFor="title">Title:</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={handleTitleChange}
-              placeholder="Enter title"
-            />
-          </div>
-          <div>
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={handleDescriptionChange}
-              placeholder="Enter description"
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="video">Video File:</label>
-            <input
-              type="file"
-              id="video"
-              accept="video/*"
-              onChange={handleVideoUpload}
-            />
-          </div>
-          <button type="button" onClick={handleLectureUpload}>
-            Upload Lecture
-          </button>
-        </form>
-        {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
-      </div>
+      {(upload) && (
+        <div className="upload-lecture">
+          <h3>Upload New Lecture</h3>
+          <form>
+            <div>
+              <label htmlFor="title">Title:</label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={handleTitleChange}
+                placeholder="Enter title"
+              />
+            </div>
+            <div>
+              <label htmlFor="description">Description:</label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={handleDescriptionChange}
+                placeholder="Enter description"
+              ></textarea>
+            </div>
+            <div>
+              <label htmlFor="video">Video File:</label>
+              <input
+                type="file"
+                id="video"
+                accept="video/*"
+                onChange={handleVideoUpload}
+              />
+            </div>
+            <button type="button" onClick={handleLectureUpload}>
+              Upload Lecture
+            </button>
+          </form>
+          {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
+        </div>
+      )}
     </div>
   );
 };

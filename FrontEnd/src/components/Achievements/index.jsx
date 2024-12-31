@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 
-const Achievements = ({ achievements }) => {
+const Achievements = ({ achievements, get, upload }) => {
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [certificate, setCertificate] = useState(null);
@@ -61,83 +61,87 @@ const Achievements = ({ achievements }) => {
   return (
     <div className="achievements">
       {/* Display achievements */}
-      <div className="achievement-list">
-        <h3>Achievements</h3>
-        {achievementList.length > 0 ? (
-          <ul>
-            {achievementList.map((ach, index) => (
-              <li key={index}>
-                <strong>{ach.headline}</strong>
-                <p>{ach.description}</p>
-                <p>Certificate Path: {ach.certificatePath}</p>
-                <div>
-                  Event Images:
-                  <ul>
-                    {ach.eventImagesPaths.map((imgPath, imgIndex) => (
-                      <li key={imgIndex}>
-                        <img src={`file://${imgPath}`} alt={`Event ${imgIndex + 1}`} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No achievements available</p>
-        )}
-      </div>
+      {(get) && (
+        <div className="achievement-list">
+          {/* <h3>Achievements</h3> */}
+          {achievementList.length > 0 ? (
+            <ul>
+              {achievementList.map((ach, index) => (
+                <li key={index}>
+                  <strong>{ach.headline}</strong>
+                  <p>{ach.description}</p>
+                  <p>Certificate Path: {ach.certificatePath}</p>
+                  <div>
+                    Event Images:
+                    <ul>
+                      {ach.eventImagesPaths.map((imgPath, imgIndex) => (
+                        <li key={imgIndex}>
+                          <img src={`file://${imgPath}`} alt={`Event ${imgIndex + 1}`} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No achievements available</p>
+          )}
+        </div>
+      )}
 
       {/* Upload Achievement Form */}
-      <div className="upload-achievement">
-        <h3>Upload New Achievement</h3>
-        <form>
-          <div>
-            <label htmlFor="headline">Headline:</label>
-            <input
-              type="text"
-              id="headline"
-              value={headline}
-              onChange={(e) => setHeadline(e.target.value)}
-              placeholder="Enter headline"
-            />
-          </div>
-          <div>
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter description"
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="certificate">Certificate (PDF):</label>
-            <input
-              type="file"
-              id="certificate"
-              name="certificate"
-              accept="application/pdf"
-              onChange={handleCertificateUpload}
-            />
-          </div>
-          <div>
-            <label htmlFor="eventImages">Event Images:</label>
-            <input
-              type="file"
-              id="eventImages"
-              name="eventImage"
-              accept="image/*"
-              multiple
-              onChange={handleEventImagesUpload}
-            />
-          </div>
-          <button type="button" onClick={handleAchievementUpload}>
-            Upload Achievement
-          </button>
-        </form>
-        {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
-      </div>
+      {(upload) && (
+        <div className="upload-achievement">
+          <h3>Upload New Achievement</h3>
+          <form>
+            <div>
+              <label htmlFor="headline">Headline:</label>
+              <input
+                type="text"
+                id="headline"
+                value={headline}
+                onChange={(e) => setHeadline(e.target.value)}
+                placeholder="Enter headline"
+              />
+            </div>
+            <div>
+              <label htmlFor="description">Description:</label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter description"
+              ></textarea>
+            </div>
+            <div>
+              <label htmlFor="certificate">Certificate (PDF):</label>
+              <input
+                type="file"
+                id="certificate"
+                name="certificate"
+                accept="application/pdf"
+                onChange={handleCertificateUpload}
+              />
+            </div>
+            <div>
+              <label htmlFor="eventImages">Event Images:</label>
+              <input
+                type="file"
+                id="eventImages"
+                name="eventImage"
+                accept="image/*"
+                multiple
+                onChange={handleEventImagesUpload}
+              />
+            </div>
+            <button type="button" onClick={handleAchievementUpload}>
+              Upload Achievement
+            </button>
+          </form>
+          {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
+        </div>
+      )}
     </div>
   );
 };

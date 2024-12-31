@@ -48,8 +48,6 @@ function SignIn() {
         if (userDetails.userType === "Scholar") {
           navigate("/scholar-dashboard");
         } else if (userDetails.userType === "Learner") {
-          navigate("/learner-dashboard");
-        } else {
           navigate("/");
         }
       } else {

@@ -72,5 +72,25 @@ Achievement.getachievements = async (req, res) => {
     }
 };
 
+// Get all achievements
+Achievement.getAllAchievements = async (req, res) => {
+    try {
+        // Retrieve all achievements
+        const achievements = await Achievement.find();
+
+        if (achievements.length === 0) {
+            return res.status(404).json({ message: 'No achievements found.' });
+        }
+
+        res.status(200).json({
+            message: 'All achievements retrieved successfully.',
+            achievements,
+        });
+    } catch (error) {
+        console.error('Error in retrieving all achievements:', error);
+        res.status(500).json({ error: 'Failed to retrieve all achievements.' });
+    }
+};
+
 // Export the model
 export default Achievement;

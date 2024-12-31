@@ -47,6 +47,20 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const getAllUser = async (req, res) => {
+  try {
+    const user = await User.find({userType: 'Scholar'});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error. Please try again.' });
+  }
+};
+
 export const signIn = async (req, res) => {
   try {
     const { username, password } = req.body;

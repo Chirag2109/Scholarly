@@ -56,6 +56,25 @@ Video.getvideos = async (req, res) => {
     }
 };
 
+Video.getAllVideos = async (req, res) => {
+    try {
+        // Find all videos for the given username
+        const videos = await Video.find();
+
+        if (videos.length === 0) {
+            return res.status(404).json({ message: 'No videos found for this user.' });
+        }
+
+        res.status(200).json({
+            message: 'Videos retrieved successfully.',
+            videos,
+        });
+    } catch (error) {
+        console.error('Error in retrieving videos:', error);
+        res.status(500).json({ message: 'Failed to retrieve videos.' });
+    }
+};
+
 // Get specific video for the user
 Video.getvideo = async (req, res) => {
     const { username, filename } = req.params;

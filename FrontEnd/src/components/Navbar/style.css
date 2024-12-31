@@ -34,7 +34,7 @@
 }
 
 #enter {
-    margin-left: 650px;
+    margin-left: 750px;
     &:hover {
         background-color: var(--w);
         color: var(--bl);

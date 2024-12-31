@@ -13,6 +13,8 @@ videoRouter.post('/addvideo', upload, (req, res) => {
     Video.addvideo(req, res);
 });
 
+videoRouter.get('/', Video.getAllVideos);
+
 videoRouter.get('/:username', Video.getvideos);
 
 videoRouter.get('/:username/:filename', Video.getvideo);

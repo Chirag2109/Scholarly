@@ -71,7 +71,7 @@ function Enter() {
   
           if (signInResponse.ok) {
             const data = await signInResponse.json();
-            localStorage.setItem('token', data.token); // Store the token in local storage
+            localStorage.setItem('authToken', data.token);
             setShowFailureAlert(false);
             setShowSuccessAlert(true);
             console.log("Data: ", data);
@@ -79,8 +79,6 @@ function Enter() {
             if (formValues.userType === "Scholar") {
               navigate("/scholar-dashboard");
             } else if (formValues.userType === "Learner") {
-              navigate("/learner-dashboard");
-            } else {
               navigate("/");
             }
 

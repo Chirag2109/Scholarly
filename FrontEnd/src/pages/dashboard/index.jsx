@@ -81,9 +81,9 @@ const Dashboard = () => {
       case 'Profile':
         return <Profile userData={userData}/>;
       case 'Achievements':
-        return <Achievements achievements={achievements.achievements}/>;
+        return <Achievements achievements={achievements.achievements} get={true} upload={true}/>;
       case 'Lectures':
-        return <Lectures lectures={lectures.videos}/>;
+        return <Lectures lectures={lectures.videos} get={true} upload={true}/>;
       case 'Notes':
         return <Notes notes={notes.notes}/>;
       default:

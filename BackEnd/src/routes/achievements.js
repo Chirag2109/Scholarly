@@ -16,5 +16,6 @@ achievementRouter.post(
 );
 
 achievementRouter.get('/:username', Achievement.getachievements);
+achievementRouter.get('/', Achievement.getAllAchievements);
 
 export default achievementRouter;

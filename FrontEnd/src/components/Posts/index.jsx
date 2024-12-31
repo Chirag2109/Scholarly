@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import Lectures from "../../components/Lectures";
+import Achievements from "../../components/Achievements";
 
-const Videos = () => {
-  const [lectures, setLectures] = useState([]);
+const Posts = () => {
+  const [achievements, setAchievements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -12,7 +12,7 @@ const Videos = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `${import.meta.env.VITE_NODEJS_BACKEND}/videos/`,
+          `${import.meta.env.VITE_NODEJS_BACKEND}/achievements/`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -23,7 +23,7 @@ const Videos = () => {
           throw new Error("Failed to fetch achievements.");
         }
         const data = await response.json();
-        setLectures(data.videos || []); // Adjust based on the API response
+        setAchievements(data.achievements || []); // Adjust based on the API response
       } catch (err) {
         setError(err.message);
       } finally {
@@ -43,7 +43,7 @@ const Videos = () => {
           ) : error ? (
             <div className="error">{error}</div>
           ) : (
-            <Lectures lectures={lectures} get={true} upload={false}/>
+            <Achievements achievements={achievements} get={true} upload={false}/>
           )}
         </div>
       </div>
@@ -51,4 +51,4 @@ const Videos = () => {
   );
 };
 
-export default Videos;
+export default Posts;

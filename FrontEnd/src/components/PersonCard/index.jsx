@@ -1,18 +1,22 @@
 import React from "react";
 import "./styles.css";
 
-const PersonCard = (props) => {
+const PersonCard = ({ users }) => {
+    const usersList = Array.isArray(users) ? users : [];
     return (
-        <div className="person-card">
-            <div className="profile-picture">
-                <img src={props.person.image} alt={`${props.person.name}'s profile`} />
-            </div>
-            <div className="person-info">
-                <h2>{props.person.name}</h2>
-                <p>{props.person.title}</p>
-                <button className="connect-button">Connect</button>
-            </div>
-        </div>
+        users.map((user) => {
+            return (
+                <div className="person-card">
+                    <div className="profile-picture">
+                        <img src={''} alt={`${user.username}'s profile`} />
+                    </div>
+                    <div className="person-info">
+                        <h2>{user.username}</h2>
+                        <button className="connect-button">Learn</button>
+                    </div>
+                </div>
+            );
+        })
     );
 };
 

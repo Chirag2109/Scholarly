@@ -1,8 +1,7 @@
-import Home from '../pages/home';
-import News from '../pages/news';
+import Panel from '../components/Panel';
+import Posts from '../components/Posts';
 import Scholars from '../pages/scholars';
 import Lectures from '../pages/lectures';
-import Article from '../pages/article';
 import Enter from '../pages/signup';
 import SignIn from '../pages/signin';
 import SignOut from '../pages/signout';
@@ -17,15 +16,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Home />,
+        element: localStorage.getItem('authToken') === 'undefined' ? <Panel /> : <Posts />,
       },
       {
         path: 'scholars',
         element: <Scholars />,
-      },
-      {
-        path: 'articles',
-        element: <Article />,
       },
       {
         path: 'lectures',
