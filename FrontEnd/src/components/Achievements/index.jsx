@@ -30,9 +30,10 @@ const Achievements = ({ achievements, get, upload }) => {
       const formData = new FormData();
       formData.append('headline', headline);
       formData.append('description', description);
+      formData.append('username', localStorage.getItem('loggedInUserName'));
       formData.append('certificate', certificate);
-      eventImages.forEach((image, index) => {
-        formData.append(`eventImage${index + 1}`, image);
+      eventImages.forEach((image) => {
+        formData.append(`eventImage`, image);
       });
 
       const response = await fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/achievements/addachievement`, {

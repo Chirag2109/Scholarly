@@ -30,6 +30,7 @@ const Dashboard = () => {
         throw new Error('Failed to fetch data.');
       }
       const data = await response.json();
+      console.log(data);
       setter(data);
     } catch (err) {
       setError(err.message);
@@ -75,19 +76,21 @@ const Dashboard = () => {
   // Render sections dynamically
   const renderSection = () => {
     if (loading) return <div>Loading...</div>;
-    if (error) return <div className="error">{error}</div>;
+    // if (error) return (
+    //   <div className="error">{error}</div>
+    // );
 
     switch (activeSection) {
       case 'Profile':
-        return <Profile userData={userData}/>;
+        return <Profile userData={userData} />;
       case 'Achievements':
-        return <Achievements achievements={achievements.achievements} get={true} upload={true}/>;
+        return <Achievements achievements={achievements.achievements} get={achievements.achievements.length > 0} upload={true} />;
       case 'Lectures':
-        return <Lectures lectures={lectures.videos} get={true} upload={true}/>;
+        return <Lectures lectures={lectures.videos} get={lectures.lectures.length > 0} upload={true} />;
       case 'Notes':
-        return <Notes notes={notes.notes}/>;
+        return <Notes notes={notes.notes} get={notes.notes.length > 0} upload={true} />;
       default:
-        return <Profile userData={userData}/>;
+        return <Profile userData={userData} />;
     }
   };
 
@@ -102,6 +105,7 @@ const Dashboard = () => {
         <Sidebar setActiveSection={setActiveSection} />
         <div className="content">{renderSection()}</div>
       </div>
+
       <Footer />
     </div>
   );

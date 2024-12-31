@@ -1,10 +1,13 @@
 import React from 'react';
 import './style.css';
+import Header from '../Header';
 import { Link, useLocation } from 'react-router-dom';
 
 function Navbar() {
     const location = useLocation();
     const path = location.pathname;
+
+    const isAuthenticated = localStorage.getItem("authToken") !== null;
 
     return (
         <div className="topnav">
@@ -26,8 +29,15 @@ function Navbar() {
             >
                 <i className="fa fa-fw fa-play"></i> Lectures
             </Link>
-            <Link to="/Sign_Up" id="enter">Sign Up</Link>
-            <Link to="/Sign_In" id="in">Sign in</Link>
+
+            {!isAuthenticated ? (
+                <>
+                    <Link to="/Sign_Up" id="enter">Sign Up</Link>
+                    <Link to="/Sign_In" id="in">Sign In</Link>
+                </>
+            ) : (
+                <Header />
+            )}
         </div>
     );
 }

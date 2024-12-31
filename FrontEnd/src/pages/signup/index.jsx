@@ -16,7 +16,7 @@ function Enter() {
 
   const signUpHandler = async (event) => {
     event.preventDefault();
-  
+
     const formValues = {
       username: usernameRef.current.value,
       email: emailRef.current.value,
@@ -24,9 +24,9 @@ function Enter() {
       confirmPassword: confirmPasswordRef.current.value,
       userType: userTypeRef.current.value,
     };
-  
+
     console.log("Form values: ", formValues);
-  
+
     if (
       formValues.username &&
       formValues.email &&
@@ -35,7 +35,7 @@ function Enter() {
       formValues.userType
     ) {
       console.log("Submitting form...");
-  
+
       try {
         const response = await fetch(
           `${import.meta.env.VITE_NODEJS_BACKEND}/user/signup`,
@@ -52,7 +52,7 @@ function Enter() {
             },
           }
         );
-  
+
         if (response.ok && (response.status === 201 || response.status === 200)) {
           // Now sign in the user after successful signup
           const signInResponse = await fetch(
@@ -68,13 +68,15 @@ function Enter() {
               },
             }
           );
-  
+
           if (signInResponse.ok) {
             const data = await signInResponse.json();
             localStorage.setItem('authToken', data.token);
             setShowFailureAlert(false);
             setShowSuccessAlert(true);
-            console.log("Data: ", data);
+            const userDetails = await response.json();
+            localStorage.setItem("loggedInUserName", formValues.username);
+            localStorage.setItem("userDetails", JSON.stringify(userDetails));
 
             if (formValues.userType === "Scholar") {
               navigate("/scholar-dashboard");
@@ -104,7 +106,7 @@ function Enter() {
       console.log("Validation failed");
       setShowFailureAlert(true);
     }
-  };    
+  };
 
   return (
     <>

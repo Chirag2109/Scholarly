@@ -18,7 +18,7 @@ const Achievement = mongoose.model('Achievement', achievementSchema);
 // Add Achievement route with file upload handling
 Achievement.addachievement = async (req, res) => {
     try {
-        const { headline, description } = req.body;
+        const { headline, description, username } = req.body;
 
         // Validation for required fields
         if (!headline || !description) {
@@ -30,7 +30,7 @@ Achievement.addachievement = async (req, res) => {
         const eventImages = req.files?.['eventImage'] || []; // Event images (multiple files)
 
         const achievement = new Achievement({
-            username: req.body.username, // Assuming the username comes from req.body or session
+            username,
             headline,
             description,
             certificatePath: certificateFile ? certificateFile.path : null,

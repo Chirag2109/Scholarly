@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './style.css';
 
-const Notes = ({ notes }) => {
+const Notes = ({ notes, get, upload }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [note, setNote] = useState(null);
@@ -72,6 +72,7 @@ const Notes = ({ notes }) => {
   return (
     <div className="lectures">
       {/* Display Notes */}
+      {(get) && (
       <div className="lecture-list">
         <h3>Notes</h3>
         {notesList.length > 0 ? (
@@ -90,8 +91,10 @@ const Notes = ({ notes }) => {
           <p>No notes available</p>
         )}
       </div>
+      )}
 
       {/* Upload Notes Form */}
+      {(upload) && (
       <div className="upload-lecture">
         <h3>Upload New Note</h3>
         <form>
@@ -129,6 +132,7 @@ const Notes = ({ notes }) => {
         </form>
         {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
       </div>
+      )}
     </div>
   );
 };
