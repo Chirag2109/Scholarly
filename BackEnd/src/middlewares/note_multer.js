@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         try {
-            const uploadDir = path.join(__dirname, '..', 'uploads',  'video');
+            const uploadDir = path.join(__dirname, '..', 'uploads',  'notes');
             fs.mkdirSync(uploadDir, { recursive: true });
             cb(null, uploadDir);
         } catch (error) {
@@ -22,6 +22,6 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage }).single('video');  
+const upload = multer({ storage }).single('note');  
 
 export default upload;

@@ -1,54 +1,49 @@
 import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
 
+// Notes Schema
 const noteSchema = new mongoose.Schema({
     username: { type: String, required: true },
     title: { type: String, required: true },
-    fileName: { type: String },
-    fileType: { type: String },
-    fileData: { type: Buffer },
+    description: { type: String },
+    notes: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
 });
 
-const Note = mongoose.model('Note', noteSchema);
+const Notes = mongoose.model('Notes', noteSchema);
 
-Note.addnotes = async (req, res) => {
+// Add video route with file upload handling
+Notes.addnote = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded.' });
+    }
+
     try {
-        const { title } = req.body;
-        const username = req.user.username;
-        let fileData = null;
+        const { title, description, username } = req.body;
+        const url = path.join('/uploads', username, 'notes', req.file.filename);
 
-        if (req.file) {
-            fileData = {
-                fileName: req.file.originalname,
-                fileType: req.file.mimetype,
-                fileData: req.file.buffer,
-            };
-        }
+        const newNotes = new Notes({ username, title, description, notes: url });
+        await newNotes.save();
 
-        const newNote = new Note({
-            username,
-            title,
-            ...fileData,
-        });
-
-        await newNote.save();
-        res.status(201).json({ message: 'Note added successfully.', note: newNote });
+        res.status(201).json({ message: 'Notes added successfully.', notes: newNotes });
     } catch (error) {
-        console.error('Error adding note:', error);
+        console.error('Error adding notes:', error);
         res.status(500).json({ message: 'An error occurred. Please try again.' });
     }
 };
 
-Note.getnotes = async (req, res) => {
-    try {
-        const username = req.user.username;
-        const notes = await Note.find({ username });
+// Get video for the user
+Notes.getnote = async (req, res) => {
+    // const { username, filename } = req.params;
+    // const videoPath = path.join(__dirname, '..', 'uploads', username, 'video', filename);  // Adjusted path
 
-        res.status(200).json(notes);
-    } catch (error) {
-        console.error('Error fetching notes:', error);
-        res.status(500).json({ message: 'An error occurred. Please try again.' });
-    }
+    // if (fs.existsSync(videoPath)) {
+    //     res.sendFile(videoPath);  // Send video file to the client
+    // } else {
+    //     res.status(404).json({ message: 'Notes not found.' });
+    // }
 };
 
-export default Note;
+// Export the model for use in other parts of the application
+export default Notes;
