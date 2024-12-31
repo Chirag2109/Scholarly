@@ -31,17 +31,5 @@ Photos.addprofilepic = async (req, res) => {
     }
 };
 
-// Get video for the user
-// Notes.getnote = async (req, res) => {
-    // const { username, filename } = req.params;
-    // const videoPath = path.join(__dirname, '..', 'uploads', username, 'video', filename);  // Adjusted path
-
-    // if (fs.existsSync(videoPath)) {
-    //     res.sendFile(videoPath);  // Send video file to the client
-    // } else {
-    //     res.status(404).json({ message: 'Notes not found.' });
-    // }
-// };
-
 // Export the model for use in other parts of the application
 export default Photos;

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import './style.css';
 
-const Lectures = ({ lectures, onUpload }) => {
-  const [video, setVideo] = useState(null);
+const Lectures = ({ lectures }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [video, setVideo] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState('');
 
-  const handleVideoChange = (e) => {
+  // Ensure lectures is an array or fallback to an empty array if null or undefined
+  const lectureList = Array.isArray(lectures) ? lectures : [];
+
+  const handleVideoUpload = (e) => {
     setVideo(e.target.files[0]);
   };
 
@@ -18,79 +22,103 @@ const Lectures = ({ lectures, onUpload }) => {
     setDescription(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    if (!video || !title) {
-      alert('Please provide a video file and title');
+  const handleLectureUpload = async () => {
+    if (!title || !description || !video) {
+      setUploadStatus('All fields are required.');
       return;
     }
-  
-    if (!video.type.startsWith('video/')) {
-      alert('Please upload a valid video file');
-      return;
-    }
-  
-    const username = localStorage.getItem("loggedInUserName");
-    const formData = new FormData();
-    formData.append('video', video);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('username', username);
-  
+
     try {
+      setUploadStatus('Uploading...');
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('username', localStorage.getItem('loggedInUserName'));
+      formData.append('video', video);
+
       const response = await fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/videos/addvideo`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-        },
         body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
       });
-  
-      const data = await response.json();
+
       if (response.ok) {
-        alert('Video uploaded successfully!');
-        onUpload();
-        setVideo(null);
+        setUploadStatus('Upload successful!');
         setTitle('');
         setDescription('');
+        setVideo(null);
       } else {
-        alert(data.message || 'Error uploading video');
+        throw new Error('Upload failed!');
       }
     } catch (error) {
-      console.error('Error uploading video:', error);
-      alert('An error occurred during the upload.');
+      setUploadStatus('Failed to upload lecture.');
+      console.error(error);
     }
-  };  
+  };
 
   return (
-    <div className="lectures-container">
-      <h2>Lectures</h2>
-      <form onSubmit={handleSubmit} encType="multipart/form-data" className="form-container">
-        <input
-          type="file"
-          name="video"
-          id="videoInput"
-          onChange={handleVideoChange}
-          className="input-file"
-        />
-        <input
-          type="text"
-          name="title"
-          placeholder="Video Title"
-          value={title}
-          onChange={handleTitleChange}
-          className="input-text"
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={description}
-          onChange={handleDescriptionChange}
-          className="input-textarea"
-        ></textarea>
-        <button type="submit" className="submit-button">Upload Video</button>
-      </form>
+    <div className="lectures">
+      {/* Display Lectures */}
+      <div className="lecture-list">
+        <h3>Lectures</h3>
+        {lectureList.length > 0 ? (
+          <ul>
+            {lectureList.map((lecture, index) => (
+              <li key={index}>
+                <strong>{lecture.title}</strong>
+                <p>{lecture.description}</p>
+                <video width="320" height="240" controls>
+                  <source src={lecture.videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No lectures available</p>
+        )}
+      </div>
+
+      {/* Upload Lecture Form */}
+      <div className="upload-lecture">
+        <h3>Upload New Lecture</h3>
+        <form>
+          <div>
+            <label htmlFor="title">Title:</label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={handleTitleChange}
+              placeholder="Enter title"
+            />
+          </div>
+          <div>
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={handleDescriptionChange}
+              placeholder="Enter description"
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="video">Video File:</label>
+            <input
+              type="file"
+              id="video"
+              accept="video/*"
+              onChange={handleVideoUpload}
+            />
+          </div>
+          <button type="button" onClick={handleLectureUpload}>
+            Upload Lecture
+          </button>
+        </form>
+        {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
+      </div>
     </div>
   );
 };

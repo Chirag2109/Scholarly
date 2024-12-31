@@ -1,0 +1,116 @@
+:root {
+    --y: #FFFF00;
+    /* Yellow */
+    --b: #010536;
+    /* Dark Blue */
+    --w: #FBFBF8;
+    /* Off White */
+    --bl: black;
+    /* Black */
+}
+
+.achievements {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+    background-color: var(--w);
+    /* Off White background */
+    color: var(--b);
+    /* Dark Blue text color */
+}
+
+.achievement-list {
+    padding: 20px;
+    background-color: var(--w);
+    /* Off White */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: var(--b);
+    /* Dark Blue text */
+}
+
+.achievement-list h3 {
+    margin-bottom: 15px;
+    color: var(--b);
+    /* Dark Blue */
+}
+
+.achievement-list ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.achievement-list li {
+    margin-bottom: 20px;
+}
+
+.achievement-list img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.upload-achievement {
+    padding: 20px;
+    background-color: var(--w);
+    /* Off White */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.upload-achievement h3 {
+    margin-bottom: 15px;
+    color: var(--b);
+    /* Dark Blue */
+}
+
+.upload-achievement form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.upload-achievement label {
+    font-weight: bold;
+    color: var(--b);
+    /* Dark Blue */
+}
+
+.upload-achievement input,
+.upload-achievement textarea {
+    padding: 10px;
+    border: 1px solid var(--b);
+    /* Dark Blue borders */
+    border-radius: 5px;
+}
+
+.upload-achievement input[type="file"] {
+    padding: 5px;
+}
+
+.upload-achievement button {
+    padding: 10px;
+    background-color: var(--b);
+    /* Yellow */
+    color: var(--w);
+    /* Black text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload-achievement button:hover {
+    background-color: var(--y);
+    /* Dark Blue on hover */
+    color: var(--bl);
+    /* Off White text on hover */
+}
+
+.upload-status {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--bl);
+    /* Black text for status */
+}

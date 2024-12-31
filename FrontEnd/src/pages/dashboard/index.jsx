@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import "./style.css";
+import './style.css';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import Profile from '../../components/Profile';
-import Publications from '../../components/Publications';
 import Achievements from '../../components/Achievements';
 import Lectures from '../../components/Lectures';
 import Notes from '../../components/Notes';
@@ -12,84 +11,83 @@ import Footer from '../../layout/Footer';
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('Profile');
   const [userData, setUserData] = useState(null);
+  const [achievements, setAchievements] = useState([]);
+  const [lectures, setLectures] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    // Fetch scholar details
-    fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/${localStorage.getItem("loggedInUserName")}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch user details.");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setUserData(data);
-      })
-      .catch((err) => {
-        setError(err.message);
-        console.error(err);
+  // Helper to fetch data
+  const fetchData = async (url, setter) => {
+    try {
+      setLoading(true);
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
       });
-  }, []);
-
-  const handleUpload = (section, uploadedData) => {
-    // Handle uploads for different sections
-    const endpointMap = {
-      Profile: '/updateProfile',
-      Publications: '/uploadPublication',
-      Achievements: '/uploadAchievement',
-      Lectures: '/uploadLecture',
-      Notes: '/uploadNote',
-    };
-
-    fetch(`${import.meta.env.VITE_NODEJS_BACKEND}${endpointMap[section]}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(uploadedData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to upload to ${section}`);
-        }
-        return response.json();
-      })
-      .then((updatedData) => {
-        setUserData(updatedData); // Update the userData after successful upload
-      })
-      .catch((err) => {
-        console.error(`Upload error in ${section}:`, err.message);
-      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch data.');
+      }
+      const data = await response.json();
+      setter(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const renderSection = () => {
-    if (error) {
-      return <div className="error">{error}</div>;
-    }
+  // Fetch user data on mount
+  useEffect(() => {
+    fetchData(
+      `${import.meta.env.VITE_NODEJS_BACKEND}/user/${localStorage.getItem('loggedInUserName')}`,
+      setUserData
+    );
+  }, []);
 
-    if (!userData) {
-      return <div>Loading...</div>;
+  // Load section data dynamically
+  useEffect(() => {
+    switch (activeSection) {
+      case 'Achievements':
+        fetchData(
+          `${import.meta.env.VITE_NODEJS_BACKEND}/achievements/${localStorage.getItem('loggedInUserName')}`,
+          setAchievements
+        );
+        break;
+      case 'Lectures':
+        fetchData(
+          `${import.meta.env.VITE_NODEJS_BACKEND}/videos/${localStorage.getItem('loggedInUserName')}`,
+          setLectures
+        );
+        break;
+      case 'Notes':
+        fetchData(
+          `${import.meta.env.VITE_NODEJS_BACKEND}/notes/${localStorage.getItem('loggedInUserName')}`,
+          setNotes
+        );
+        break;
+      default:
+        break;
     }
+  }, [activeSection]);
+
+  // Render sections dynamically
+  const renderSection = () => {
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div className="error">{error}</div>;
 
     switch (activeSection) {
       case 'Profile':
-        return <Profile userData={userData} onUpload={(data) => handleUpload('Profile', data)} />;
-      case 'Publications':
-        return <Publications publications={userData.publications} onUpload={(data) => handleUpload('Publications', data)} />;
+        return <Profile userData={userData}/>;
       case 'Achievements':
-        return <Achievements achievements={userData.achievements} onUpload={(data) => handleUpload('Achievements', data)} />;
+        return <Achievements achievements={achievements.achievements}/>;
       case 'Lectures':
-        return <Lectures lectures={userData.lectures} onUpload={(data) => handleUpload('Lectures', data)} />;
+        return <Lectures lectures={lectures.videos}/>;
       case 'Notes':
-        return <Notes notes={userData.notes} onUpload={(data) => handleUpload('Notes', data)} />;
+        return <Notes notes={notes.notes}/>;
       default:
-        return <Profile userData={userData} onUpload={(data) => handleUpload('Profile', data)} />;
+        return <Profile userData={userData}/>;
     }
   };
 

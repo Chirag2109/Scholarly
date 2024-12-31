@@ -13,7 +13,8 @@ videoRouter.post('/addvideo', upload, (req, res) => {
     Video.addvideo(req, res);
 });
 
-// Serve video file
-videoRouter.get('/uploads/:username/video/:filename', authenticateToken, Video.getvideo);
+videoRouter.get('/:username', Video.getvideos);
+
+videoRouter.get('/:username/:filename', Video.getvideo);
 
 export default videoRouter;

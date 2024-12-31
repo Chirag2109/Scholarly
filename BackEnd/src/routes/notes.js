@@ -9,6 +9,6 @@ notesRouter.post('/addnote', upload, (req, res) => {
     Notes.addnote(req, res);
 });
 
-// notesRouter.get('/getnote', authenticateToken, Notes.getnote);
+notesRouter.get('/:username', Notes.getnotes);
 
 export default notesRouter;

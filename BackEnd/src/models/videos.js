@@ -7,13 +7,14 @@ const videoSchema = new mongoose.Schema({
     username: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String },
-    video: { type: String, required: true },
+    video: { type: String, required: true }, // Path to the uploaded video file
     createdAt: { type: Date, default: Date.now },
 });
 
+// Model
 const Video = mongoose.model('Video', videoSchema);
 
-// Add video route with file upload handling
+// Add Video route with file upload handling
 Video.addvideo = async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded.' });
@@ -33,7 +34,29 @@ Video.addvideo = async (req, res) => {
     }
 };
 
-// Get video for the user
+// Get videos for a specific user
+Video.getvideos = async (req, res) => {
+    try {
+        const { username } = req.params; // Assuming username is passed as a URL parameter
+
+        // Find all videos for the given username
+        const videos = await Video.find({ username });
+
+        if (videos.length === 0) {
+            return res.status(404).json({ message: 'No videos found for this user.' });
+        }
+
+        res.status(200).json({
+            message: 'Videos retrieved successfully.',
+            videos,
+        });
+    } catch (error) {
+        console.error('Error in retrieving videos:', error);
+        res.status(500).json({ message: 'Failed to retrieve videos.' });
+    }
+};
+
+// Get specific video for the user
 Video.getvideo = async (req, res) => {
     const { username, filename } = req.params;
     const videoPath = path.join(__dirname, '..', 'uploads', 'video', filename);  // Adjusted path

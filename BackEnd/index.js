@@ -5,6 +5,7 @@ import userRouter from './src/routes/users.js';
 import notesRouter from './src/routes/notes.js';
 import videoRouter from './src/routes/videos.js';
 import photoRouter from './src/routes/profilepic.js';
+import achievementRouter from './src/routes/achievements.js';
 import './src/config/dbconnection.js';
 import dotenv from 'dotenv';
 
@@ -21,6 +22,7 @@ app.use("/user", userRouter);
 app.use("/notes", notesRouter);
 app.use("/videos", videoRouter);
 app.use("/profilepic", photoRouter);
+app.use("/achievements", achievementRouter);
 // app.use(cors({
 //   origin: 'http://localhost:3000',
 //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
