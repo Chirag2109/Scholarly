@@ -18,12 +18,6 @@ const Sidebar = ({ setActiveSection }) => {
           Profile
         </li>
         <li
-          className={activeItem === 'Publications' ? 'active' : ''}
-          onClick={() => handleItemClick('Publications')}
-        >
-          Publications
-        </li>
-        <li
           className={activeItem === 'Achievements' ? 'active' : ''}
           onClick={() => handleItemClick('Achievements')}
         >
