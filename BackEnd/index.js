@@ -4,6 +4,7 @@ import authenticateToken from './src/utils/helper.js';
 import userRouter from './src/routes/users.js';
 import notesRouter from './src/routes/notes.js';
 import videoRouter from './src/routes/videos.js';
+import photoRouter from './src/routes/profilepic.js';
 import './src/config/dbconnection.js';
 import dotenv from 'dotenv';
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded( { extended: true } ));
 app.use("/user", userRouter);
 app.use("/notes", notesRouter);
 app.use("/videos", videoRouter);
+app.use("/profilepic", photoRouter);
 // app.use(cors({
 //   origin: 'http://localhost:3000',
 //   methods: ['GET', 'POST', 'PUT', 'DELETE'],

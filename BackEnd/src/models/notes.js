@@ -21,7 +21,7 @@ Notes.addnote = async (req, res) => {
 
     try {
         const { title, description, username } = req.body;
-        const url = path.join('/uploads', username, 'notes', req.file.filename);
+        const url = path.join('/uploads', 'notes', req.file.filename);
 
         const newNotes = new Notes({ username, title, description, notes: url });
         await newNotes.save();

@@ -5,7 +5,7 @@ const Publications = ({ publications }) => {
     <div className="publications">
       <h2>Publications</h2>
       <ul>
-        {publications.map((pub, index) => (
+        {publications?.map((pub, index) => (
           <li key={index}>{pub}</li>
         ))}
       </ul>

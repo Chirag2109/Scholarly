@@ -21,7 +21,7 @@ Video.addvideo = async (req, res) => {
 
     try {
         const { title, description, username } = req.body;
-        const url = path.join('/uploads', username, 'video', req.file.filename);
+        const url = path.join('/uploads', 'video', req.file.filename);
 
         const newVideo = new Video({ username, title, description, video: url });
         await newVideo.save();
@@ -36,7 +36,7 @@ Video.addvideo = async (req, res) => {
 // Get video for the user
 Video.getvideo = async (req, res) => {
     const { username, filename } = req.params;
-    const videoPath = path.join(__dirname, '..', 'uploads', username, 'video', filename);  // Adjusted path
+    const videoPath = path.join(__dirname, '..', 'uploads', 'video', filename);  // Adjusted path
 
     if (fs.existsSync(videoPath)) {
         res.sendFile(videoPath);  // Send video file to the client

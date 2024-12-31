@@ -5,7 +5,7 @@ const Achievements = ({ achievements }) => {
     <div className="achievements">
       <h2>Achievements</h2>
       <ul>
-        {achievements.map((ach, index) => (
+        {achievements?.map((ach, index) => (
           <li key={index}>{ach}</li>
         ))}
       </ul>

@@ -10,11 +10,12 @@ function SignOut() {
   const handleSignOut = () => {
     // Clear any stored user data (e.g., tokens, session info)
     localStorage.removeItem('authToken');
-    localStorage.removeItem('userRole');
+    localStorage.removeItem('userDetails');
+    localStorage.removeItem('loggedInUserName');
 
     console.log('User signed out successfully');
     // Redirect the user to the home page or sign-in page
-    navigate('/sign_in');
+    navigate('/');
   };
 
   return (

@@ -95,7 +95,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <Header userData={userData} />
+      <header className="header">
+        <h1>Scholar Dashboard</h1>
+        <Header />
+      </header>
+
       <div className="dashboard-body">
         <Sidebar setActiveSection={setActiveSection} />
         <div className="content">{renderSection()}</div>
