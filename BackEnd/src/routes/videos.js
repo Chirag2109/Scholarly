@@ -1,7 +1,11 @@
 import express from 'express';
 import upload from '../middlewares/video_multer.js';
-import Video from '../models/videos.js';
-import authenticateToken from '../utils/helper.js';
+import {
+    addVideo,
+    getVideosByUser,
+    getAllVideos,
+    getVideoByFilename,
+} from '../controllers/videos.js';
 
 const videoRouter = express.Router();
 
@@ -10,13 +14,13 @@ videoRouter.use(express.urlencoded({ extended: true }));
 videoRouter.use(express.json());
 
 videoRouter.post('/addvideo', upload, (req, res) => {
-    Video.addvideo(req, res);
+    addVideo;
 });
 
-videoRouter.get('/', Video.getAllVideos);
+videoRouter.get('/', getAllVideos);
 
-videoRouter.get('/:username', Video.getvideos);
+videoRouter.get('/:username', getVideosByUser);
 
-videoRouter.get('/:username/:filename', Video.getvideo);
+videoRouter.get('/:username/:filename', getVideoByFilename);
 
 export default videoRouter;

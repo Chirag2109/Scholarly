@@ -1,21 +1,19 @@
 import express from 'express';
-import Achievement from '../models/achievements.js';
 import upload from '../middlewares/achievement_multer.js';
+import { addAchievement, getAchievements, getAllAchievements } from '../controllers/achievements.js';
 
 const achievementRouter = express.Router();
 
-achievementRouter.post(
-    '/addachievement',
-    upload.fields([
-        { name: 'certificate', maxCount: 1 },
-        { name: 'eventImage', maxCount: 10 },
-    ]),
-    (req, res) => {
-        Achievement.addachievement(req, res);
-    }
-);
+// Route for adding achievement
+achievementRouter.post('/addachievement', upload.fields([
+    { name: 'certificate', maxCount: 1 },
+    { name: 'eventImage', maxCount: 10 },
+]), addAchievement);
 
-achievementRouter.get('/:username', Achievement.getachievements);
-achievementRouter.get('/', Achievement.getAllAchievements);
+// Route for getting achievements for a specific user
+achievementRouter.get('/:username', getAchievements);
+
+// Route for getting all achievements
+achievementRouter.get('/', getAllAchievements);
 
 export default achievementRouter;

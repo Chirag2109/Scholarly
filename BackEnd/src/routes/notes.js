@@ -1,14 +1,14 @@
 import express from 'express';
-import Notes from '../models/notes.js';
+import { addNote, getNotes } from '../controllers/notes.js';
 import authenticateToken from '../utils/helper.js';
 import upload from '../middlewares/note_multer.js';
 
 const notesRouter = express.Router();
 
-notesRouter.post('/addnote', upload, (req, res) => {
-    Notes.addnote(req, res);
-});
+// Route for adding notes
+notesRouter.post('/addnote', upload, addNote);
 
-notesRouter.get('/:username', Notes.getnotes);
+// Route for getting notes for a specific user
+notesRouter.get('/:username', authenticateToken, getNotes);
 
 export default notesRouter;
