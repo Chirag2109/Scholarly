@@ -60,7 +60,7 @@ function Enter() {
             {
               method: "POST",
               body: JSON.stringify({
-                usernameOrEmail: formValues.email, // Use email or username
+                username: formValues.username,
                 password: formValues.password,
               }),
               headers: {

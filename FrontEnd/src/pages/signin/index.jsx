@@ -1,27 +1,44 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./style.css";
 import logo from "../../Images/Logo3.png";
 
 function SignIn() {
   const navigate = useNavigate();
-  const usernameOrEmailRef = useRef(null);
+  const usernameRef = useRef(null);
   const passwordRef = useRef(null);
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchUserDetails = async () => {
-    const email = localStorage.getItem("loggedInUserEmail");
-    if (!email) {
-      console.error("No email found in localStorage.");
+  useEffect(() => {
+    const username = localStorage.getItem("loggedInUserName");
+    console.log("Username inside useEffect:", username); // Ensure username is logged
+
+    if (username) {
+      fetchUserDetails(username);
+    }
+  }, []); // Empty dependency array ensures this runs only once
+
+  const fetchUserDetails = async (username) => {
+    if (!username) {
+      console.error("Username is null or undefined.");
       return;
     }
 
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      console.error("Token not found.");
+      return;
+    }
+
+    console.log("Token:", token);
+    console.log("Fetching details for username:", username); // Log username
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/${email}`, {
+      const response = await fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/${username}`, {
         headers: {
-          Authorization: localStorage.getItem("authToken"),
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -36,25 +53,22 @@ function SignIn() {
           navigate("/");
         }
       } else {
-        console.error("Failed to fetch user details.");
+        console.log("Failed to fetch user details.");
       }
     } catch (error) {
-      console.error("Error fetching user details:", error);
+      console.log("Error fetching user details:", error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const usernameOrEmail = usernameOrEmailRef.current.value;
+    const username = usernameRef.current.value;
     const password = passwordRef.current.value;
 
     const newErrors = {};
-    if (!usernameOrEmail) newErrors.usernameOrEmail = "Please enter your username or email.";
+    if (!username) newErrors.username = "Please enter your username.";
     if (!password) newErrors.password = "Please enter your password.";
-    if (usernameOrEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usernameOrEmail)) {
-      newErrors.usernameOrEmail = "Invalid email format.";
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -66,7 +80,7 @@ function SignIn() {
     try {
       const response = await fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/signin`, {
         method: "POST",
-        body: JSON.stringify({ usernameOrEmail, password }),
+        body: JSON.stringify({ username, password }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -76,8 +90,8 @@ function SignIn() {
         const data = await response.json();
         if (data?.token) {
           localStorage.setItem("authToken", data.token);
-          localStorage.setItem("loggedInUserEmail", usernameOrEmail);
-          fetchUserDetails();
+          localStorage.setItem("loggedInUserName", username); // Save username
+          fetchUserDetails(username); // Now call with correct username
         } else {
           alert("Sign-in failed: Token not received");
         }
@@ -102,14 +116,14 @@ function SignIn() {
         <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="usernameOrEmail">Username or Email</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
-              id="usernameOrEmail"
-              name="usernameOrEmail"
-              ref={usernameOrEmailRef}
+              id="username"
+              name="username"
+              ref={usernameRef}
             />
-            {errors.usernameOrEmail && <p className="error">{errors.usernameOrEmail}</p>}
+            {errors.username && <p className="error">{errors.username}</p>}
           </div>
 
           <div className="form-group">

@@ -1,0 +1,108 @@
+:root {
+    --y: #FFFF00;
+    /* Yellow */
+    --b: #010536;
+    /* Dark Blue */
+    --w: #FBFBF8;
+    /* Off White */
+    --bl: black;
+    /* Black */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--w);
+    color: var(--b);
+}
+
+.lectures-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--w);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: var(--b);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.input-file,
+.input-text,
+.input-textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--b);
+    border-radius: 4px;
+    background-color: var(--w);
+    color: var(--b);
+}
+
+.input-file {
+    padding: 12px;
+}
+
+.input-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.input-text:focus,
+.input-textarea:focus,
+.input-file:focus {
+    outline: none;
+    border-color: var(--y);
+    box-shadow: 0 0 4px var(--y);
+}
+
+.submit-button {
+    padding: 12px;
+    font-size: 1rem;
+    background-color: var(--b);
+    color: var(--w);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: var(--y);
+}
+
+.submit-button:active {
+    background-color: var(--bl);
+    color: var(--w);
+}
+
+@media (max-width: 600px) {
+    .lectures-container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .input-file,
+    .input-text,
+    .input-textarea {
+        font-size: 0.9rem;
+    }
+
+    .submit-button {
+        font-size: 0.9rem;
+    }
+}

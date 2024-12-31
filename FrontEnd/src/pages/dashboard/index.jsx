@@ -16,7 +16,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch scholar details
-    fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/${localStorage.getItem("loggedInUserEmail")}`, {
+    fetch(`${import.meta.env.VITE_NODEJS_BACKEND}/user/${localStorage.getItem("loggedInUserName")}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
